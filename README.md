@@ -1,5 +1,7 @@
 # SHAFT
 
+The SHAFT stack allows you to create an app, defining only the database schema and the html forms.
+
 - [Backend]:
   - Sqlite db
   - [Tuql](https://github.com/bradleyboy/tuql) (sqlite schema -> graphql api)
