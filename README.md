@@ -11,9 +11,10 @@
   - Htmx
   - Astro
 
-<p align="right">
-  <img src=".assets/logo_dalle.png" alt="Your Logo" width="400" height="auto">
+<p align="center">
+  <img src=".assets/logo_dalle.png" alt="Your Logo" width="100" height="auto">
 </p>
+
 
 ## Maybe
 
