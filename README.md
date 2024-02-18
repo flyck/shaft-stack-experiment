@@ -2,7 +2,7 @@
 
 - [Backend]:
   - Sqlite db
-  - Tuql (sqlite schema -> graphql api)
+  - [Tuql](https://github.com/bradleyboy/tuql) (sqlite schema -> graphql api)
   - Fly.io
     - ([litefs](https://fly.io/docs/litefs/) for distributed sqlite
     - containers app to host the tuql nodejs express api
@@ -10,6 +10,10 @@
 - [Frontend]:
   - Htmx
   - Astro
+
+<p align="right">
+  <img src=".assets/logo_dalle.png" alt="Your Logo" width="400" height="auto">
+</p>
 
 ## Maybe
 
