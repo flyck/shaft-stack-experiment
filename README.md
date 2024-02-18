@@ -1,6 +1,6 @@
 # SHAFT
 
-The SHAFT stack allows you to create an app, defining only the database schema and the html forms.
+The SHAFT stack allows you to create an app, defining only the database schema and the html forms. Creating an api layer and managing the frontend is completely dropped, while you still get a graphQL api for free, which can be embedded in third party tools for operations.
 
 - [Backend]:
   - Sqlite db
