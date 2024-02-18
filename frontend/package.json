@@ -1,0 +1,23 @@
+{
+  "name": "frontend",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.5.4",
+    "@astrojs/tailwind": "^5.1.0",
+    "@fontsource/rajdhani": "^5.0.8",
+    "astro": "^4.4.0",
+    "astro-htmx": "^1.0.5",
+    "htmx.org": "^1.9.10",
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.13.0",
+    "typescript": "^5.3.3"
+  }
+}
