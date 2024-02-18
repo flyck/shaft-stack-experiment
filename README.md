@@ -12,7 +12,7 @@
   - Astro
 
 <p align="center">
-  <img src=".assets/logo_dalle.png" alt="Your Logo" width="100" height="auto">
+  <img src=".assets/logo_dalle.png" alt="Your Logo" width="150" height="auto">
 </p>
 
 
