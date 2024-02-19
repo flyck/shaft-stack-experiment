@@ -1,0 +1,50 @@
+---
+const actualQuery = `{
+  party(id:3){
+    id
+    title
+    description
+    location
+    date
+    participants {
+      id
+      partyId
+      name
+    }
+  }
+}`
+const query = `{"query": "${actualQuery.replaceAll("\n", "")}"}`
+---
+<div class="w-96 p-4" hx-ext="client-side-templates">
+
+  <div
+    hx-post="http://localhost:4000/graphql"
+    hx-trigger="load"
+    hx-target="#content"
+    mustache-template="foo"
+    hx-vals={query}
+  >
+
+    <p id="content" class="py-2">:)</p>
+
+    <template id="foo">
+      {`{{#data.party}}`}
+      <ol>
+        <li>{`{{title}}`}</li>
+        <li>{`{{description}}`}</li>
+        <li>Where: {`{{location}}`}</li>
+        <li>When: {`{{date}}`}</li>
+      </ol>
+
+      <ul class="mt-2">
+        Participants: 
+        {`{{#participants}}`}
+        <li>- {`{{name}}`}</li>
+        {`{{/participants}}`}
+      </ul>
+      {`{{/data.party}}`}
+      
+      {`{{^data.party}}`}<p>Party not found :(</p>{`{{/data.party}}`}
+    </template>
+  </div>
+</div>
