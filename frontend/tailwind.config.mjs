@@ -5,7 +5,7 @@ export default {
    theme: {
       extend: {},
       fontFamily: {
-         lato: ["Rajdhani", "sans-serif"],
+         rajdhani: ["Rajdhani"],
       },
       colors: {
          mate: {

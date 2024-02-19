@@ -7,6 +7,9 @@ bun install htmx.org astro-htmx
 ...
 ```
   - steps inspired from: https://github.com/kodexArg/astro-htmx-template
+- Integration with a json response (htmx default is html)
+  - very helpful: https://marcus-obst.de/blog/htmx-json-handling
+
 
 ## 🚀 Project Structure
 
