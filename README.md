@@ -6,7 +6,7 @@ The SHAFT stack allows you to create an app, defining only the database schema a
   - Sqlite db
   - [Tuql](https://github.com/bradleyboy/tuql) (sqlite schema -> graphql api)
   - Fly.io
-    - ([litefs](https://fly.io/docs/litefs/) for distributed sqlite
+    - [litefs](https://fly.io/docs/litefs/) for distributed sqlite
     - containers app to host the tuql nodejs express api
     - fly can also host static pages
 - [Frontend]:
