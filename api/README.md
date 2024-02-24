@@ -14,8 +14,15 @@ This project was created using `bun init` in bun v1.0.21. [Bun](https://bun.sh) 
   - just install sqlite3 seperately and it works
 
 
-## Sqlite
+## Sqlite Setup
 
+Create a new database:
+```sh
+sqlite3 db.sqlite
+```
+
+
+Create the tables:
 ```sql
 create table parties(
   id integer not null primary key autoincrement,
@@ -31,7 +38,7 @@ create table participants(
   email text,
   invitation_sent boolean not null,
   foreign key (party_id)
-       references parties (id)
+       references parties (id) on delete cascade
 );
 ```
 
@@ -48,4 +55,9 @@ INSERT INTO participants (party_id, name, email, invitation_sent) VALUES
 (2, 'Bob Johnson', 'bob@example.com', 1),
 (3, 'Alice Anderson', 'alice@example.com', 0),
 (3, 'Charlie Brown', 'charlie@example.com', 1);
+```
+
+Exit:
+```sh
+.exit
 ```
