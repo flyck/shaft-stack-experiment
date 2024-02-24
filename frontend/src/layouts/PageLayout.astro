@@ -1,0 +1,38 @@
+---
+import ChevronLeftIcon from "../components/mini/arrow-left.astro"
+import ChevronRightIcon from "../components/mini/arrow-right.astro"
+
+interface Props {
+left: string | undefined;
+right: string | undefined;
+title: string
+}
+
+const { left, right, title } = Astro.props;
+---
+<main class="flex min-h-screen flex-col items-center justify-between border-2 border-red-500">
+      <div class="my-auto mx-auto p-4">
+        <div class="mb-4 flex w-96 sm:w-80">
+          {left ? <a href={left} class="flex" aria-label="Go Left">
+            <ChevronLeftIcon class="h-7 w-7 self-center mr-2" />
+          </a> : <div class="flex">
+            <div class="h-7 w-7 self-center mr-2" />
+          </div>}
+          <div class="w-full h-96">
+            <div class="mb-4">
+              <div class="w-full dark:bg-gray-900 bg-gray-100 dark:border-gray-800 p-2 rounded-lg text-center border">
+                {title}
+              </div>
+            </div>
+            <div class="rounded-lg border dark:bg-gray-900 bg-gray-100 dark:text-gray-100 text-gray-900 dark:border-gray-800 border-gray-200 max-h-80">
+              <slot />
+            </div>
+          </div>
+          {right ? <a href={right} class="flex" aria-label="Go Right">
+            <ChevronRightIcon class="h-7 w-7 self-center ml-2" />
+          </a> : <div class="flex">
+            <div class="h-7 w-7 self-center ml-2" />
+          </div>}
+        </div>
+      </div >
+    </main>

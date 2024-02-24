@@ -1,16 +1,9 @@
 ---
 const actualQuery = `{
-  party(id:2){
+  participants(partyId:3){
     id
-    title
-    description
-    location
-    date
-    participants {
-      id
-      partyId
-      name
-    }
+    partyId
+    name
   }
 }`
 const query = `{"query": "${actualQuery.replaceAll("\n", "")}"}`
@@ -28,23 +21,16 @@ const query = `{"query": "${actualQuery.replaceAll("\n", "")}"}`
     <p id="content" class="py-2">:)</p>
 
     <template id="foo">
-      {`{{#data.party}}`}
-      <ol>
-        <li>{`{{title}}`}</li>
-        <li>{`{{description}}`}</li>
-        <li>Where: {`{{location}}`}</li>
-        <li>When: {`{{date}}`}</li>
-      </ol>
-
+      {`{{#data.participants}}`}
       <ul class="mt-2">
-        Participants: 
+        Participants:
         {`{{#participants}}`}
         <li>- {`{{name}}`}</li>
         {`{{/participants}}`}
       </ul>
-      {`{{/data.party}}`}
-      
-      {`{{^data.party}}`}<p>Party not found :(</p>{`{{/data.party}}`}
+      {`{{/data.participants}}`}
+
+      {`{{^data.participants}}`}<p>Party not found :(</p>{`{{/data.participants}}`}
     </template>
   </div>
 </div>
