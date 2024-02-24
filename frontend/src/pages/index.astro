@@ -1,9 +1,8 @@
 ---
-import PageLayout from '../layouts/Layout.astro';
-import Test from '../components/test.astro';
+import PageLayout from '../layouts/PageLayout.astro';
 import Parties from '../components/parties.astro';
 ---
 
-<PageLayout title="Welcome to Astro." left=undefined right="/participants">
-            <Parties  />
+<PageLayout title="Details" right="/participants">
+  <Parties  />
 </PageLayout>
