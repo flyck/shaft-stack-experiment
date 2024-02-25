@@ -4,8 +4,8 @@ import Input from "./../components/mini/input.astro"
 import Scrollable from "./../layouts/Scrollable.astro"
 import SubmitButton from "./../components/submitButton.astro"
 
-const createPartyMutation = `mutation create($title: String!) {
-  createParty(title: $title){
+const createPartyMutation = `mutation create($title: String!, $location: String, $date: String, $description: String) {
+  createParty(title: $title, location: $location, date: $date, description: $description){
     id
     title
   }
@@ -16,6 +16,7 @@ const createPartyBody = `{"query": "${createPartyMutation.replaceAll("\n", "")}"
 
 <PageLayout title="Create Party">
 <!-- taken from here <3 https://www.submitjson.com/blog/htmx-post-json -->
+<!-- find a better way, maybe with form sections? but the problem of json will remain-->
 <script is:inline>
   htmx.defineExtension('submitjson', {
     onEvent: function (name, evt) {
@@ -26,7 +27,7 @@ const createPartyBody = `{"query": "${createPartyMutation.replaceAll("\n", "")}"
     encodeParameters: function(xhr, parameters, elt) {
       xhr.overrideMimeType('text/json') // override default mime type
       const body = { // set your request body
-        query: "mutation create($title: String!) {createParty(title: $title){ id title }}",
+        ...parameters,
         variables: parameters,
       }
       return (JSON.stringify(body))
@@ -39,9 +40,9 @@ const createPartyBody = `{"query": "${createPartyMutation.replaceAll("\n", "")}"
       hx-post="http://localhost:4000/graphql"
       hx-swap="none"
       hx-ext="submitjson"
+      hx-vals={createPartyBody}
       >
       <Scrollable>
-
         <Input name="title" title="Title" class="w-full rounded-sm dark:bg-gray-800" type="text" value="25th Birthday"></Input>
         <Input name="description" title="Description" class="w-full rounded-sm dark:bg-gray-800" type="text" value="Lets go hard"></Input>
         <Input name="location" title="Where" class="w-full rounded-sm dark:bg-gray-800" type="text" value="Dunenberg"></Input>
@@ -50,7 +51,7 @@ const createPartyBody = `{"query": "${createPartyMutation.replaceAll("\n", "")}"
       <SubmitButton id="submitButton">
         Ok <!--<Spinner class="w-6" id="spinner" />-->
       </SubmitButton>
-         <!-- TODO find a better way to do this -->
+         <!-- TODO find a better way to do a redirect based on the html response -->
         <script is:inline>
           document.getElementById('myForm').addEventListener('htmx:afterRequest', function(event) {
           const response = JSON.parse(event.detail.xhr.response)

@@ -3,9 +3,9 @@ import Input from "./mini/input.astro"
 import Scrollable from "./../layouts/Scrollable.astro"
 import SubmitButton from "./submitButton.astro"
 
-const partyId = "20"
-const getPartyQuery = `query {
-  party(id: ${partyId}){
+const partyId = "4"
+const getPartyQuery = `query getParty($id: Int!){
+  party(id: $id){
     id
     title
     description
@@ -22,6 +22,25 @@ const deletePartyMutation = `mutation {
 }`
 const deletePartyBody = `{"query": "${deletePartyMutation.replaceAll("\n", "")}"}`
 ---
+<script is:inline>
+  htmx.defineExtension('submitjson', {
+    onEvent: function (name, evt) {
+      if (name === "htmx:configRequest") {
+        evt.detail.headers['Content-Type'] = "application/json"
+      }
+    },
+    encodeParameters: function(xhr, parameters, elt) {
+      xhr.overrideMimeType('text/json') // override default mime type
+      const urlParams = new URLSearchParams(window.location.search)
+      const body = {
+        ...parameters,
+        variables: {id: parseInt(urlParams.get("id"))},
+      }
+      return (JSON.stringify(body))
+    }
+  })
+</script>
+
 <div hx-ext="client-side-templates">
   <Scrollable>
     <p id="content" class=""></p>
@@ -68,7 +87,8 @@ const deletePartyBody = `{"query": "${deletePartyMutation.replaceAll("\n", "")}"
       hx-target="#content"
       mustache-template="main"
       hx-vals={getPartyBody}
-     />
+      hx-ext="submitjson"
+     ></div>
   </Scrollable>
 
   <SubmitButton>
