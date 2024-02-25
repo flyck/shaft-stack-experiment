@@ -1,0 +1,41 @@
+---
+import SubmitButton from "./submitButton.astro"
+import Scrollable from "./../layouts/Scrollable.astro"
+
+const actualQuery = `{
+  participants(where: {partyId: 1}) {
+    id
+    partyId
+    name
+  }
+}`
+const query = `{"query": "${actualQuery.replaceAll("\n", "")}"}`
+---
+<div hx-ext="client-side-templates">
+  <Scrollable>
+  <div
+    hx-post="http://localhost:4000/graphql"
+    hx-trigger="load, click"
+    hx-target="#content"
+    mustache-template="foo2"
+    hx-vals={query}
+  >
+    <p id="content" class="text-sm"></p>
+
+    <template id="foo2">
+      {`{{#data}}`}
+        {`{{#participants}}`}
+        <div class="border-b border-gray-500 p-2">
+          <div class="ml-2 mr-2">{`{{name}}`}</div>
+        </div>
+        {`{{/participants}}`}
+      {`{{/data}}`}
+
+      {`{{^data.participants}}`}<p>Party not found :(</p>{`{{/data.participants}}`}
+    </template>
+  </div>
+  </Scrollable>
+  <SubmitButton>
+    + <!--<Spinner class="w-6" id="spinner" />-->
+  </SubmitButton>
+</div>

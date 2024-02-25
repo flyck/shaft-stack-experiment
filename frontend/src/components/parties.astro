@@ -1,50 +1,97 @@
 ---
-const actualQuery = `{
-  party(id:3){
+import Input from "./mini/input.astro"
+import Scrollable from "./../layouts/Scrollable.astro"
+import SubmitButton from "./submitButton.astro"
+
+const partyId = "4"
+const getPartyQuery = `query getParty($id: Int!){
+  party(id: $id){
     id
     title
     description
     location
     date
-    participants {
-      id
-      partyId
-      name
-    }
   }
 }`
-const query = `{"query": "${actualQuery.replaceAll("\n", "")}"}`
+const getPartyBody = `{"query": "${getPartyQuery.replaceAll("\n", "")}"}`
+
+const deletePartyMutation = `mutation {
+  deleteParty(id: ${partyId}){
+    success
+  }
+}`
+const deletePartyBody = `{"query": "${deletePartyMutation.replaceAll("\n", "")}"}`
 ---
-<div class="w-96 p-4" hx-ext="client-side-templates">
+<script is:inline>
+  htmx.defineExtension('submitjson', {
+    onEvent: function (name, evt) {
+      if (name === "htmx:configRequest") {
+        evt.detail.headers['Content-Type'] = "application/json"
+      }
+    },
+    encodeParameters: function(xhr, parameters, elt) {
+      xhr.overrideMimeType('text/json') // override default mime type
+      const urlParams = new URLSearchParams(window.location.search)
+      const body = {
+        ...parameters,
+        variables: {id: parseInt(urlParams.get("id"))},
+      }
+      return (JSON.stringify(body))
+    }
+  })
+</script>
 
-  <div
-    hx-post="http://localhost:4000/graphql"
-    hx-trigger="load"
-    hx-target="#content"
-    mustache-template="foo"
-    hx-vals={query}
-  >
+<div hx-ext="client-side-templates">
+  <Scrollable>
+    <p id="content" class=""></p>
 
-    <p id="content" class="py-2">:)</p>
-
-    <template id="foo">
+    <template id="main">
       {`{{#data.party}}`}
-      <ol>
-        <li>{`{{title}}`}</li>
-        <li>{`{{description}}`}</li>
-        <li>Where: {`{{location}}`}</li>
-        <li>When: {`{{date}}`}</li>
-      </ol>
-
-      <ul class="mt-2">
-        Participants: 
-        {`{{#participants}}`}
-        <li>- {`{{name}}`}</li>
-        {`{{/participants}}`}
-      </ul>
+      <Input title="Title" class="w-full rounded-sm dark:bg-gray-800" type="text" value={`{{title}}`}></Input>
+      <Input title="Description" class="w-full rounded-sm dark:bg-gray-800" type="text" value={`{{description}}`}></Input>
+      <Input title="Where" class="w-full rounded-sm dark:bg-gray-800" type="text" value={`{{location}}`}></Input>
+      <Input title="When" class="w-full rounded-sm dark:bg-gray-800" type="text" value={`{{date}}`}></Input>
+      <div class="p-2">
+        <button
+          id="deleteButton"
+          aria-label="Delete Party"
+          class="bg-red-600 text-gray-200 rounded-sm w-full"
+          type="button"
+          hx-post="http://localhost:4000/graphql"
+          hx-trigger="click"
+          hx-vals={deletePartyBody}
+          hx-swap="none"
+        >
+          Delete
+        </button>
+         <!-- TODO find a better way to do this -->
+        <script is:inline>
+          document.getElementById('deleteButton').addEventListener('htmx:afterRequest', function(event) {
+          if (event.detail.xhr.status === 200) {
+              console.log("redirect")
+              window.location.href = '/';
+            }
+          });
+        </script>
+      </div>
       {`{{/data.party}}`}
-      
+
       {`{{^data.party}}`}<p>Party not found :(</p>{`{{/data.party}}`}
+
+
     </template>
-  </div>
+
+    <div
+      hx-post="http://localhost:4000/graphql"
+      hx-trigger="load"
+      hx-target="#content"
+      mustache-template="main"
+      hx-vals={getPartyBody}
+      hx-ext="submitjson"
+     ></div>
+  </Scrollable>
+
+  <SubmitButton>
+    Ok <!--<Spinner class="w-6" id="spinner" />-->
+  </SubmitButton>
 </div>

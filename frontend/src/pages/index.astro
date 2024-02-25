@@ -1,18 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Test from '../components/test.astro';
 import Parties from '../components/parties.astro';
 ---
 
-<Layout title="Welcome to Astro.">
-   <div class="fixed inset-0 flex items-center justify-center p-4">
-      <div class="bg-white w-full max-w-sm rounded-lg border border-gray-200 dark:border-gray-800">
-        <div class="p-6 space-y-4">
-          <div class="space-y-2">
-            <h1 class="text-2xl font-semibold">Welcome</h1>
-            <Parties  />
-          </div>
-        </div>
-      </div>
-    </div>
+<Layout>
+<main class="flex min-h-screen flex-col items-center justify-between">
+  <div class="flex flex-col items-center justify-center min-h-screen mt-auto">
+    <h1 class="text-2xl font-serif mb-10">Party Task Planner</h1>
+    <a href="/create">
+      <button
+        aria-label="New Party"
+        class="bg-blue-500 mx-auto flex items-center justify-center h-14 w-14 rounded text-xl"
+        variant="outline"
+      >
+        +
+      </Button>
+    </a>
+  </div>
+</main>
 </Layout>
