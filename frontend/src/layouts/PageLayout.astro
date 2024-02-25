@@ -11,6 +11,10 @@ title: string
 
 const { left, right, title } = Astro.props;
 ---
+<script is:inline src="https://unpkg.com/htmx.org"></script>
+<script is:inline src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+<script is:inline src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+<script is:inline src="https://unpkg.com/mustache@latest"></script>
 <Layout>
   <div class="flex min-h-screen flex-col items-center justify-between ">
     <div class="my-auto mx-auto p-4">

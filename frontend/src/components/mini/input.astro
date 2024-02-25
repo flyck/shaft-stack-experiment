@@ -2,6 +2,7 @@
 interface Props {
   class: string | undefined;
   title: string
+  id: string | undefined
 }
 
 const { class: className, title, ...rest } = Astro.props;

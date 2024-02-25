@@ -1,0 +1,68 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Input from "./../components/mini/input.astro"
+import Scrollable from "./../layouts/Scrollable.astro"
+import SubmitButton from "./../components/submitButton.astro"
+
+const createPartyMutation = `mutation create($title: String!) {
+  createParty(title: $title){
+    id
+    title
+  }
+}`
+const createPartyBody = `{"query": "${createPartyMutation.replaceAll("\n", "")}"}`
+
+---
+
+<PageLayout title="Create Party">
+<!-- taken from here <3 https://www.submitjson.com/blog/htmx-post-json -->
+<script is:inline>
+  htmx.defineExtension('submitjson', {
+    onEvent: function (name, evt) {
+      if (name === "htmx:configRequest") {
+        evt.detail.headers['Content-Type'] = "application/json"
+      }
+    },
+    encodeParameters: function(xhr, parameters, elt) {
+      xhr.overrideMimeType('text/json') // override default mime type
+      const body = { // set your request body
+        query: "mutation create($title: String!) {createParty(title: $title){ id title }}",
+        variables: parameters,
+      }
+      return (JSON.stringify(body))
+    }
+  })
+</script>
+
+  <div>
+    <form id="myForm"
+      hx-post="http://localhost:4000/graphql"
+      hx-swap="none"
+      hx-ext="submitjson"
+      >
+      <Scrollable>
+
+        <Input name="title" title="Title" class="w-full rounded-sm dark:bg-gray-800" type="text" value="25th Birthday"></Input>
+        <Input name="description" title="Description" class="w-full rounded-sm dark:bg-gray-800" type="text" value="Lets go hard"></Input>
+        <Input name="location" title="Where" class="w-full rounded-sm dark:bg-gray-800" type="text" value="Dunenberg"></Input>
+        <Input name="date" title="When" class="w-full rounded-sm dark:bg-gray-800" type="text" value="2022-05-05"></Input>
+      </Scrollable>
+      <SubmitButton id="submitButton">
+        Ok <!--<Spinner class="w-6" id="spinner" />-->
+      </SubmitButton>
+         <!-- TODO find a better way to do this -->
+        <script is:inline>
+          document.getElementById('myForm').addEventListener('htmx:afterRequest', function(event) {
+          const response = JSON.parse(event.detail.xhr.response)
+          const partyId = response.data?.createParty?.id
+          if (event.detail.xhr.status === 200 && partyId) {
+              console.log("redirect")
+              window.location.href = `/party?id=${partyId}`;
+            }
+          });
+        </script>
+    </form>
+</div>
+
+
+</PageLayout>

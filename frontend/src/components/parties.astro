@@ -3,8 +3,9 @@ import Input from "./mini/input.astro"
 import Scrollable from "./../layouts/Scrollable.astro"
 import SubmitButton from "./submitButton.astro"
 
+const partyId = "20"
 const getPartyQuery = `query {
-  party(id:2){
+  party(id: ${partyId}){
     id
     title
     description
@@ -15,20 +16,15 @@ const getPartyQuery = `query {
 const getPartyBody = `{"query": "${getPartyQuery.replaceAll("\n", "")}"}`
 
 const deletePartyMutation = `mutation {
-  deleteParty(id: 2){
+  deleteParty(id: ${partyId}){
     success
   }
 }`
 const deletePartyBody = `{"query": "${deletePartyMutation.replaceAll("\n", "")}"}`
-
 ---
 <div hx-ext="client-side-templates">
-
-
-
   <Scrollable>
-    <p id="content" class="">:)</p>
-    <!--<Spinner class="w-6" />-->
+    <p id="content" class=""></p>
 
     <template id="main">
       {`{{#data.party}}`}
@@ -38,32 +34,44 @@ const deletePartyBody = `{"query": "${deletePartyMutation.replaceAll("\n", "")}"
       <Input title="When" class="w-full rounded-sm dark:bg-gray-800" type="text" value={`{{date}}`}></Input>
       <div class="p-2">
         <button
+          id="deleteButton"
           aria-label="Delete Party"
           class="bg-red-600 text-gray-200 rounded-sm w-full"
           type="button"
           hx-post="http://localhost:4000/graphql"
           hx-trigger="click"
           hx-vals={deletePartyBody}
+          hx-swap="none"
         >
           Delete
         </button>
+         <!-- TODO find a better way to do this -->
+        <script is:inline>
+          document.getElementById('deleteButton').addEventListener('htmx:afterRequest', function(event) {
+          if (event.detail.xhr.status === 200) {
+              console.log("redirect")
+              window.location.href = '/';
+            }
+          });
+        </script>
       </div>
       {`{{/data.party}}`}
 
       {`{{^data.party}}`}<p>Party not found :(</p>{`{{/data.party}}`}
+
+
     </template>
+
+    <div
+      hx-post="http://localhost:4000/graphql"
+      hx-trigger="load"
+      hx-target="#content"
+      mustache-template="main"
+      hx-vals={getPartyBody}
+     />
   </Scrollable>
-  <div
-    hx-post="http://localhost:4000/graphql"
-    hx-trigger="load"
-    hx-target="#content"
-    mustache-template="main"
-    hx-vals={getPartyBody}
-  >
-  </div>
 
   <SubmitButton>
     Ok <!--<Spinner class="w-6" id="spinner" />-->
   </SubmitButton>
-
 </div>
