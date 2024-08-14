@@ -17,7 +17,6 @@ The SHAFT stack allows you to create an app, defining only the database schema a
   <img src=".assets/logo_dalle.png" alt="Your Logo" width="150" height="auto">
 </p>
 
-
 ## Maybe
 
 - [ ] Try Clerk for easy auth
@@ -39,3 +38,8 @@ Resources included for free on all plans ([docs](https://fly.io/docs/about/prici
   be generated from the backend. Using HTMX with a nodejs typescript backend would be against the
   philosophy of htmx. Using a non-javacsript language like GO really does seem to be the intended
   use.
+
+## Experiment outcome
+
+Parsing json responses with HTMX is an anti-pattern. While it does generally work, it is not the intended use.
+
